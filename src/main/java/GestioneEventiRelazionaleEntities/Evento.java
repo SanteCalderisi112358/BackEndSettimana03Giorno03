@@ -10,9 +10,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,9 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-@Table(name = "Eventi")
-public class Evento {
+//@Table(name = "Eventi")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Evento {
 	@Id
 	@GeneratedValue
 	private UUID id;
