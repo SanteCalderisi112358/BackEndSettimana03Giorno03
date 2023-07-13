@@ -18,6 +18,7 @@ import GestioneEventiRelazionaleUtilies.JPAUtilies;
 @NamedQuery(name = "partiteVinteInCasa", query = "SELECT partita FROM PartitaCalcio partita WHERE partita.golCasa>partita.golOspite")
 @NamedQuery(name = "partiteVInteInTrasferta", query = "SELECT partita FROM PartitaCalcio partita WHERE partita.golCasa<partita.golOspite")
 @NamedQuery(name = "partitePareggiate", query = "SELECT partita FROM PartitaCalcio partita WHERE partita.golCasa==partita.golOspite")
+@NamedQuery(name = "eventiSoldOut", query = "SELECT evento FROM Eventoevento WHERE evento.partecipazioni.size()==numeroMaxPartecipanti")
 public class EventoDAO {
 	private EntityManager em;
 	private EntityManagerFactory emf = JPAUtilies.getEntityManagerFactory();
@@ -145,6 +146,25 @@ public class EventoDAO {
 				return partitePareggiate;
 			} else {
 				System.out.println("Nessuna partita è terminata con un pareggio");
+				return null;
+			}
+		} finally {
+			em.close();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Evento> getEventiSoldOut() {
+		EntityManager em = emf.createEntityManager();
+		try {
+			Query query = em.createQuery("eventiSoldOut");
+
+			List<Evento> eventiSoldOut = query.getResultList();
+
+			if (eventiSoldOut != null) {
+				return eventiSoldOut;
+			} else {
+				System.out.println("Nessun evento è Sold Out");
 				return null;
 			}
 		} finally {
